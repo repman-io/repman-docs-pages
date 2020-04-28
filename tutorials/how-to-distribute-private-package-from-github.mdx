@@ -1,0 +1,69 @@
+export const meta = {
+    "title": "How to distribute private packages from GitHub using Repman",
+    "description": "How to distribute private packages from GitHub using Repman - PHP Repository Manager",
+    "order": 1
+};
+
+# How to distribute private packages from GitHub using Repman - PHP Repository Manager
+
+## 1. Create an account on repman.io
+
+[https://app.repman.io/register](https://app.repman.io/register)
+
+You can sign up with your GitHub, GitLab or Bitbucket account, or your email address:
+
+![Sign up](/docs/static/articles/tutorials/how-to-distribute-private-package-from-github/sign-up.png)
+
+## 2. Create your first organization
+
+Your organization will act as a storage for private packages. After creating an organization, you will be able to share your packages with individuals using tokens – for example with your clients or company employees. An organization must have a unique name per Repman instance.
+
+![Add organization](/docs/static/articles/tutorials/how-to-distribute-private-package-from-github/add-organization.png)
+
+## 3. Add a new package to your organization
+
+In this example, we'll use GitHub for authentication. Switch to the "Packages" tab and click "Add new package":
+
+![Add new package](/docs/static/articles/tutorials/how-to-distribute-private-package-from-github/add-package.png)
+
+Choose "GitHub" repository type. You will be asked for additional permission to your GitHub account. Once accepted, Repman will scan the list of your repositories, allowing you to choose the ones you want to import:
+
+![Select package type](/docs/static/articles/tutorials/how-to-distribute-private-package-from-github/select-package-type.png)
+
+Upon adding a new package, Repman will need some time to gather package metadata and synchronize all required data. You will see this status on the packages list:
+
+![Package added](/docs/static/articles/tutorials/how-to-distribute-private-package-from-github/package-added.png)
+
+When completed, your package will be ready to ship to the desired destination:
+
+![Package list](/docs/static/articles/tutorials/how-to-distribute-private-package-from-github/package-list.png)
+
+## 4. (Optional) Create and share new access token
+
+Composer must have access to the Repman repository data. You can create an individual token (without limits) with a custom name, or use the default one generated during the organization setup.
+
+## 5. Configure Composer
+
+With the token in hand, you can authorize Composer with  the following command (replace `TOKEN_VALUE` with the actual token):
+
+```bash
+composer config --global --auth http-basic.acme.repo.repman.io token TOKEN_VALUE
+```
+
+The last step is adding the following lines to your `composer.json` (modify accordingly if you have more configured repositories):
+
+```json
+{
+    "repositories": [
+        {"type": "composer", "url": "https://acme.repo.repman.io"}
+    ]
+}
+```
+
+## 6. Install your private package
+
+You can now demand your private package with the regular `require` command, for example:
+
+```bash
+composer require acme/project
+```

@@ -1,0 +1,38 @@
+export const meta = {
+    "title": "Packagist CDN/Proxy",
+    "description": "Add a preferred mirror address for each package with the Repman Proxy.",
+    "order": 1
+};
+
+# Packagist CDN/Proxy
+
+The Repman Proxy can be used in two different ways: as a Composer plugin, or a composer.json file. Upon installation, the preferred mirror address to the Repman Proxy will be added for each package. Original addresses of repositories, distributions and sources will be kept.
+
+## Composer plugin
+
+Installation is very simple:
+
+```bash
+composer global require repman-io/composer-plugin
+```
+
+The command will install the plugin globally. From now on, all dependencies will be downloaded from the Repman Proxy using a global high-speed CDN.
+
+## composer.json file
+
+Another way is to use composer.json configuration file by adding these lines:
+
+```json
+{
+    "repositories": [
+        {"type": "composer", "url": "https://repo.repman.io"},
+        {"packagist": false}
+    ]
+}
+```
+
+After that, you will need to update your composer.lock file to allow Composer to download dependencies from the Repman Proxy.
+
+```bash
+composer update --lock
+```

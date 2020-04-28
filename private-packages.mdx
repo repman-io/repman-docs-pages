@@ -1,0 +1,44 @@
+export const meta = {
+    "title": "Private Packages",
+    "description": "Learn how to add packages via version control, PEAR channels, directory paths, and artifacts.",
+    "order": 2
+};
+
+# Private Packages
+
+Repman lets you add four different package types:
+
+- VCS (Git, SVN, integrations with GitHub, GitLab and Bitbucket)
+- PEAR channel
+- Path to directory
+- Artifact
+
+### VCS Packages
+
+VCS stands for [version control system](https://getcomposer.org/doc/05-repositories.md#vcs). At the moment, Repman supports *Git*, *SVN*, *Fossil* and *Mercurial*. Once you provide the URL to your repository, Repman will scan its contents and extract the package metadata information.
+
+To simplify the import of private repositories, Repman provides native integration with GitHub, GitLab and Bitbucket:
+
+![Add package](/docs/static/articles/private-packages/add-form.png)
+
+Read how to use public provider in our tutorial: [How to distribute private package from GitHub using Repman - PHP Repository Manager](http://repman.io/docs/tutorials/how-to-distribute-private-package-from-github/)
+
+### PEAR
+
+This type allows to fetch packages from a PEAR channel  (PEAR  PHP Extension and Application Repository). A channel is a website that provides packages for download along with a couple of meta-information files.
+
+You can read how to use PEAR channels with Composer here: [https://getcomposer.org/doc/05-repositories.md#pear](https://getcomposer.org/doc/05-repositories.md#pear)
+
+### Path
+
+Local, relative, or absolute path to the directory with the package.
+
+You can read how to use paths with Composer here: [https://getcomposer.org/doc/05-repositories.md#path](https://getcomposer.org/doc/05-repositories.md#path)
+
+### Artifact
+
+Sometimes it is not possible to access the sources of a given package. Instead, only the distributions themselves are available, for example as ZIP files. In this case, we can use the "artifact" package type by providing the path to the directory with distributions in the URL:
+
+![Artifact](/docs/static/articles/private-packages/artifact.png)
+
+To allow package distribution, make sure to enter the path as absolute: `/home/akondas/artifacts`

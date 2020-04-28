@@ -1,0 +1,202 @@
+export const meta = {
+    "title": "Standalone",
+    "description": "Learn how to install Repman on your server with Docker or Ansible playbooks.",
+    "order": 5
+};
+
+# Standalone
+
+Repman is an open-source project under the [MIT license](https://github.com/repman-io/repman/blob/master/LICENSE). This means that you can use it without restrictions for your own use, or in your organizations. There are two ways to install Repman on your server:
+
+1. [Docker installation](/#docker-installation)
+2. [Ansible playbooks installation](/#ansible-playbooks-installation)
+
+<Hint type="info">
+
+ℹ️ Before the installation, make sure to [configure a domain for Repman](/#domain-configuration).
+
+</Hint>
+
+## Domain configuration
+
+Due to the PHP Composer architecture, Repman requires domain configuration to work properly.
+You can do it in two ways:
+
+1. Change `/etc/hosts` on your [local machine](/#hosts-file)
+2. Add a [DNS record](/#dns-records)
+
+### Hosts file
+
+Add the following lines with your IP address to your `/etc/hosts` file:
+
+```
+$IP repman.local
+$IP repo.repman.local
+```
+
+Add this line for every organization created in Repman:
+
+```
+$IP organization.repo.repman.local
+```
+
+### DNS records
+
+Add the following A records to your DNS:
+
+```
+A repman.local
+A repo.repman.local
+A *.repo.repman.local
+```
+
+## Docker
+
+### Installation
+
+First, you need to clone the repository from [https://github.com/repman-io/repman](https://github.com/repman-io/repman)
+
+```bash
+$ git clone https://github.com/repman-io/repman.git
+```
+
+To start all containers, run:
+
+```bash
+$ docker-compose up
+```
+
+### Configuration
+
+- Override with `docker-compose.override.yml` if needed.
+- Set your **domain** (`APP_HOST`) in [`.env.docker`](/docs/standalone#envdocker).
+
+#### `.env.docker`
+
+- `PHP_URL` - app container (php-fpm) URL with port
+- `APP_HOST` - your **domain**
+- `APP_URL_SCHEME` - `https` or `http`
+- `APP_ALLOWED_PACKAGE_TYPES` - list of allowed packages types
+- `APP_GITLAB_API_URL` - self-hosted GitLab instance URL
+- `APP_ENV` - application environment - `prod` or `dev`
+- `APP_DEBUG` - `0` - debugging disabled, `1` - debugging enabled
+- `APP_SECRET` - should be unique to your application
+- `DATABASE_URL` - database URL
+- `TRUSTED_PROXIES` - configuration [behind a Load Balancer or a Reverse Proxy](https://symfony.com/doc/current/deployment/proxies.html)
+- `MAILER_DSN` - mailer DSN
+- `MAILER_SENDER` - mailer sender
+- `SENTRY_DSN` - [Sentry](https://sentry.io) DSN
+- `OAUTH_GITHUB_CLIENT_ID` - [GitHub OAuth app](https://developer.github.com/apps/building-oauth-apps/) Client ID
+- `OAUTH_GITHUB_CLIENT_SECRET` - [GitHub OAuth app](https://developer.github.com/apps/building-oauth-apps/) Client Secret
+- `OAUTH_GITLAB_CLIENT_ID` - [GitLab OAuth app](https://docs.gitlab.com/ee/integration/oauth_provider.html) Client ID
+- `OAUTH_GITLAB_CLIENT_SECRET` - [GitLab OAuth app](https://docs.gitlab.com/ee/integration/oauth_provider.html) Client Secret
+- `OAUTH_BITBUCKET_CLIENT_ID` - [Bitbucket OAuth app](https://confluence.atlassian.com/bitbucket/oauth-on-bitbucket-cloud-238027431.html) Client ID
+- `OAUTH_BITBUCKET_CLIENT_SECRET` - [Bitbucket OAuth app](https://confluence.atlassian.com/bitbucket/oauth-on-bitbucket-cloud-238027431.html) Client Secret
+- `OAUTH_BUDDY_CLIENT_ID` - [Buddy OAuth app](https://buddy.works/docs/api/getting-started/oauth2/introduction) Client ID
+- `OAUTH_BUDDY_CLIENT_SECRET` - [Buddy OAuth app](https://buddy.works/docs/api/getting-started/oauth2/introduction) Client Secret
+- `GA_TRACKING` - [Google Analytics](https://analytics.google.com/analytics/web/) Tracking Code
+- `PROXY_DIST_DIR` - absolute path to proxy distributions directory
+- `PACKAGES_DIST_DIR` - absolute path to packages distributions directory
+
+#### SSL
+
+If you wish to use your own certificate, put the key and the certificate in:
+
+- `docker/nginx/ssl/private/server.key`
+- `docker/nginx/ssl/certs/server.crt`
+
+Otherwise, a self-signed certificate will be generated.
+
+## Ansible Playbooks installation
+
+You can use two [Ansible](https://www.ansible.com/) playbooks to set up and deploy Repman:
+
+- `ansible/setup.yml`
+- `ansible/deploy.yml`
+
+First, you need to clone the repository from [https://github.com/repman-io/repman](https://github.com/repman-io/repman)
+
+```bash
+$ git clone https://github.com/repman-io/repman.git
+```
+
+Then, install Ansible and create you inventory in the `inventories` dir, for example `ansible/inventories/local`:
+
+```bash
+localhost ansible_connection=local
+```
+
+Once created, all you need to do is run your Ansible playbook and overwrite the `server_hostname` variable:
+
+```bash
+ansible-playbook ansible/setup.yml -i ansible/inventories/local --extra-vars '{"server_hostname":"repman.local"}'
+```
+
+To update your working instance, use the deploy playbook:
+
+```bash
+ansible-playbook ansible/deploy.yml -i ansible/inventories/local --extra-vars '{"server_hostname":"repman.local"}'
+```
+
+## OAuth
+
+### GitHub
+
+[GitHub OAuth Documentation](https://developer.github.com/apps/building-oauth-apps/)
+
+Authorization callback URL:
+
+- `https://your-domain.local`
+
+Scopes:
+
+- registration: `user:email`
+- repositories: `read:org`, `repo`
+
+### GitLab
+
+[GitLab OAuth Documentation](https://docs.gitlab.com/ee/integration/oauth_provider.html)
+
+Callback URLs:
+
+- `https://your-domain.local/auth/gitlab/check`
+- `https://your-domain.local/register/gitlab/check`
+- `https://your-domain.local/user/token/gitlab/check`
+
+Scopes:
+
+- registration: `read_user`
+- repositories: `api`
+
+### Bitbucket
+
+[Bitbucket OAuth documentation](https://confluence.atlassian.com/bitbucket/oauth-on-bitbucket-cloud-238027431.html)
+
+Callback URL:
+
+- `https://your-domain.local`
+
+Scopes:
+
+- registration: `email`
+- repositories: `repository`, `webhook`
+
+### Buddy
+
+[Buddy OAuth documentation](https://buddy.works/docs/api/getting-started/oauth2/introduction)
+
+Authorization Callback URL:
+
+- `https://your-domain.local`
+
+Scopes:
+
+- registration: `USER_EMAIL`
+
+### Self-hosted GitLab
+
+To integrate with self-hosted GitLab, enter the instance url in the `APP_GITLAB_API_URL` environment variable:
+
+```
+APP_GITLAB_API_URL=https://gitlab.organization.lan
+```
