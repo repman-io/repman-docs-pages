@@ -1,0 +1,32 @@
+export const meta = {
+    "title": "Security Scanner",
+    "description": "Automatically check whether your package uses dependencies with known security vulnerabilities.",
+    "order": 7
+};
+
+# Security Scanner
+
+Repman's built in **Security Scanner** automatically checks whether your package uses dependencies with known security vulnerabilities.
+
+It looks for `composer.lock` files in your package repository (supports **multi lock** packages) and reads dependencies list.
+
+It uses [FriendsOfPHP Security Advisories](https://github.com/FriendsOfPHP/security-advisories) database which is kept up to date by a cron job (in two-hour intervals).
+
+## In case of vulnerability detection
+
+- `WARNING` status will appear in packages list
+- **email** will be sent to all members of organization (this can be turned off in [user profile](/docs/user-profile))
+
+![Security Scanner overview](/docs/static/articles/security-scanner/overview.png)
+
+Hovering over status badge will display last scan result:
+
+![Security Scanner hover](/docs/static/articles/security-scanner/hover.png)
+
+Clicking on the status badge will redirect to the full scan history:
+
+![Security scan results](/docs/static/articles/security-scanner/results.png)
+
+Scan is performed every time the package is successfully **synchronized** but you can always trigger manual scan using menu:
+
+![Security scan menu](/docs/static/articles/security-scanner/menu.png)
