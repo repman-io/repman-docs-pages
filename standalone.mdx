@@ -211,3 +211,24 @@ To integrate with self-hosted GitLab, enter the instance url in the `APP_GITLAB_
 ```
 APP_GITLAB_API_URL=https://gitlab.organization.lan
 ```
+
+## Telemetry
+
+<Hint type="info">
+
+ℹ️ Telemetry feature works from version 0.5.0
+
+</Hint>
+
+In order to improve Repman, we have introduced a possibility to send over anonymous statistics for the standalone version.
+If you wish to support our efforts in developing this package, administrators can turn this option on in the instance settings.
+
+### What data is collected
+
+- proxy and private package download count
+- user count
+- organization: members count and type, token count
+- package: type, release dates, last scan results (only status), download count, last error (only bool status)
+- instance: id, version, OS version, PHP version, configuration
+
+Repman is an open-source project so you can check what data is collected and sent directly in the code: [TelemetryEndpointTest](https://github.com/repman-io/repman/tree/master/tests/Unit/Service/Telemetry/TelemetryEndpointTest.php)
