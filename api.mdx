@@ -1,0 +1,31 @@
+export const meta = {
+    "title": "API",
+    "description": "Access Repman instance using REST API.",
+    "order": 8
+};
+
+# REST API
+
+## Generate a new API Token
+
+In order to start using API you will need to generate `API Token`. In order to do that:
+
+![API Tokens menu](/docs/static/articles/user-profile/menu.png)
+
+1. Click `API Tokens` in user's menu
+1. Click `Generate a new API Token`
+1. Enter token name and click `Generate`
+1. You will be redirected back to the list. Now you can copy your newly generated token and start using API.
+
+## Authorization
+
+In order to authorize the api you should use the `X-API-TOKEN` header with generated token.
+
+Example request:
+
+```bash
+curl --location --request GET 'https://repman.io/api/organization' \
+--header 'X-API-TOKEN: d45d1eb9e4e9ab13fd8668557711bc81786a3ea60f5bb209581acf14ec036743'
+```
+
+## Reference
