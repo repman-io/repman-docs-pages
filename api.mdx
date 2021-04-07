@@ -24,8 +24,14 @@ In order to authorize the api you should use the `X-API-TOKEN` header with gener
 Example request:
 
 ```bash
-curl --location --request GET 'https://repman.io/api/organization' \
---header 'X-API-TOKEN: d45d1eb9e4e9ab13fd8668557711bc81786a3ea60f5bb209581acf14ec036743'
+curl --location --request POST 'https://app.repman.io/api/organization/my-organization/package' \
+--header 'Content-Type: application/json' \
+--header 'X-API-TOKEN: d45d1eb9e4e9ab13fd8668557711bc81786a3ea60f5bb209581acf14ec036743' \
+--data-raw '{
+    "repository": "my/repository",
+    "type": "gitlab",
+    "keepLastReleases": 0
+}'
 ```
 
 ## Reference
