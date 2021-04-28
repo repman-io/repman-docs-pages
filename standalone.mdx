@@ -108,6 +108,19 @@ If you wish to use your own certificate, put the key and the certificate in:
 
 Otherwise, a self-signed certificate will be generated.
 
+### Upgrading
+
+To make sure that all unnecessary cache volumes are removed and restored, it is best to update as follows:
+
+```bash
+$ docker-compose down
+$ git pull
+$ docker-compose up -d
+```
+
+Otherwise, make sure the "/app/var/cache" volume will be cleared between each update.
+
+
 ## Ansible Playbooks installation
 
 You can use two [Ansible](https://www.ansible.com/) (at least version 2.8 is required) playbooks to set up and deploy Repman:
